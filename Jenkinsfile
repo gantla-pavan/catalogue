@@ -166,6 +166,5 @@ pipeline {
 //         }
 //         aborted {
 //             echo 'pipeline is aborted'
-//         }
-//     }
-// }
+        }
+    }
