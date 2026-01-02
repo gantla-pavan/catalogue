@@ -47,21 +47,24 @@ pipeline {
             }
         }
         // Here you need to select scanner tool and send the analysis to server
-         stage('Sonar Scan'){
-            environment {
-                def scannerHome = tool 'sonar-8.0'
+         stage('Sonar Scan') {
+    steps {
+        script {
+            // Ensure 'sonar-scanner' matches Global Tool Configuration
+            def scannerHome = tool 'sonar-scanner' 
+
+            // Ensure 'sonar-scanner' matches System Configuration
+            withSonarQubeEnv('sonar-scanner') { 
+                sh "${scannerHome}/bin/sonar-scanner"
             }
-            steps {
-                script{
-                    withSonarQubeEnv('sonar-server') {
-                    withSonarQubeEnv('SonarQube-8.0') {
-                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.login=$SONAR_TOKEN"
+        }
+    }
 }
 
                     }
                 }
-            }
-        }
+            
+        
         // stage('Quality Gate') {
         //     steps {
         //         timeout(time: 1, unit: 'HOURS') {
