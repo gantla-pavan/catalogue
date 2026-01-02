@@ -50,10 +50,10 @@ pipeline {
          stage('Sonar Scan') {
     steps {
         script {
-            // Ensure 'sonar-scanner' matches Global Tool Configuration
-            def scannerHome = tool 'sonar-scanner' 
-
-            // Ensure 'sonar-scanner' matches System Configuration
+            // Must match the Name in Global Tool Configuration (image_c57988.png)
+            def scannerHome = tool 'sonar-8.0' 
+            
+            // Must match the Name in System Configuration (image_c490e8.png)
             withSonarQubeEnv('sonar-scanner') { 
                 sh "${scannerHome}/bin/sonar-scanner"
             }
@@ -61,11 +61,11 @@ pipeline {
     }
 }
 
-                    }
-                }
+                    
+                
             
         
-        // stage('Quality Gate') {
+         // stage('Quality Gate') {
         //     steps {
         //         timeout(time: 1, unit: 'HOURS') {
         //             // Wait for the quality gate status
@@ -172,5 +172,6 @@ pipeline {
         aborted {
             echo 'pipeline is aborted'
         }
-    }
-
+    } 
+ } 
+}
