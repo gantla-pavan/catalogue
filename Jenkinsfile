@@ -47,7 +47,13 @@ pipeline {
                 script {
                     def scannerHome = tool 'sonar-8.0'
                     withSonarQubeEnv('sonar-scanner') {
-                        sh "${scannerHome}/bin/sonar-scanner"
+                        sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=${COMPONENT} \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=$SONAR_TOKEN
+                        """
                     }
                 }
             }
@@ -62,25 +68,22 @@ pipeline {
         }
 
         stage('Build Image') {
-    steps {
-        script {
-            withAWS(region: 'us-east-1', credentials: 'aws-credentials') {
-                sh """
-                aws ecr get-login-password --region us-east-1 | \
-                docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
+            steps {
+                script {
+                    withAWS(region: 'us-east-1', credentials: 'aws-credentials') {
+                        sh """
+                        aws ecr get-login-password --region us-east-1 | \
+                        docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
 
-                docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${env.appVersion} .
-                docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${env.appVersion}
-                """
-            }
-        }
-    }
-}
-
+                        docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${env.appVersion} .
+                        docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${env.appVersion}
+                        """
+                    }
                 }
             }
-        
-    
+        }
+
+    }
 
     post {
         always {
@@ -93,4 +96,4 @@ pipeline {
             echo 'Pipeline failed'
         }
     }
-
+}
