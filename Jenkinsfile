@@ -54,7 +54,10 @@ pipeline {
             steps {
                 script{
                     withSonarQubeEnv('sonar-server') {
-                        sh  "${scannerHome}/bin/sonar-scanner"
+                    withSonarQubeEnv('SonarQube-8.0') {
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.login=$SONAR_TOKEN"
+}
+
                     }
                 }
             }
