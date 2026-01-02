@@ -154,7 +154,7 @@ pipeline {
         //     }
         // }
 
-    }
+    
 
         
 
@@ -173,4 +173,4 @@ pipeline {
             echo 'pipeline is aborted'
         }
     }
-}
+
