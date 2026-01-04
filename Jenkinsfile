@@ -8,7 +8,7 @@ pipeline {
     environment {
         COURSE = "Jenkins"
         appVersion = ""
-        ACC_ID = "515497299016"
+        ACC_ID = "478567332414"
         PROJECT = "roboshop"
         COMPONENT = "catalogue"
     }
@@ -46,7 +46,7 @@ pipeline {
             }
         }
         Here you need to select scanner tool and send the analysis to server
-        /stage('Sonar Scan'){
+         stage('Sonar Scan'){
             environment {
                 def scannerHome = tool 'sonar-8.0'
             }
@@ -117,20 +117,20 @@ pipeline {
         //     }
         // }
 
-        // stage('Build Image') {
-        //     steps {
-        //         script{
-        //             withAWS(region:'us-east-1',credentials:'aws-creds') {
-        //                 sh """
-        //                     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
-        //                     docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
-        //                     docker images
-        //                     docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Build Image') {
+            steps {
+                script{
+                    withAWS(region:'us-east-1',credentials:'aws-creds') {
+                        sh """
+                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
+                            docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
+                            docker images
+                            docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
+                        """
+                    }
+                }
+            }
+        }
     //     stage('Trivy Scan'){
     //         steps {
     //             script{
@@ -166,4 +166,5 @@ pipeline {
             echo 'pipeline is aborted'
         }
     }
+ }
 }
