@@ -23,4 +23,3 @@ jobs:
       component: catalogue
       environment: dev
     secrets: inherit
-    
