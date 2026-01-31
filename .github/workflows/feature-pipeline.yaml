@@ -8,7 +8,7 @@ permissions:
 jobs: 
   feature-pipeline:
     if: github.ref != 'refs/heads/main'
-    uses: daws-86a/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
+    uses: daws-86s/workflows/.github/workflows/feature-nodejs-pipeline.yaml@main
     with:
       project: roboshop
       component: catalogue
@@ -17,7 +17,7 @@ jobs:
 
   dev-pipeline:
     if: github.ref == 'refs/heads/main'
-    uses: daws-86a/workflows/.github/workflows/dev-nodejs-pipeline.yaml@main
+    uses: daws-86s/workflows/.github/workflows/dev-nodejs-pipeline.yaml@main
     with:
       project: roboshop
       component: catalogue
